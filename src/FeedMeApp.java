@@ -101,7 +101,7 @@ public class FeedMeApp extends JFrame {
 			}
 		});
 
-		System.out.println("tester");
+		
 		// Adding a listener to the main window
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
