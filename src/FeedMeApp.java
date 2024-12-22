@@ -590,7 +590,7 @@ public class FeedMeApp extends JFrame {
 
 	}
 
-	// מחלקת TransferHandler מותאמת אישית לגרירה ושחרור של Nodes בתוך JTree
+	// Custom TransferHandler class for dragging and dropping Nodes within a JTree
 	class TreeTransferHandler extends TransferHandler {
 		private DefaultMutableTreeNode draggedNode;
 
@@ -614,7 +614,7 @@ public class FeedMeApp extends JFrame {
 			JTree.DropLocation dropLocation = (JTree.DropLocation) support.getDropLocation();
 			TreePath path = dropLocation.getPath();
 
-			// בדיקה שה-Node אליו גוררים קיים ולא מדובר בצאצא של עצמו
+			// Checking that the node being dragged to exists and is not a child of itself
 			return path != null && draggedNode != null
 					&& !draggedNode.isNodeAncestor((DefaultMutableTreeNode) path.getLastPathComponent());
 		}
@@ -628,12 +628,12 @@ public class FeedMeApp extends JFrame {
 			TreePath destinationPath = dropLocation.getPath();
 			DefaultMutableTreeNode newParentNode = (DefaultMutableTreeNode) destinationPath.getLastPathComponent();
 
-			// ביצוע ההעברה של הענף הנגרר לקטגוריה החדשה
+			// Transferring the trailing branch to the new category
 			DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
 			model.removeNodeFromParent(draggedNode); // הסרתו מהמיקום הישן
 			model.insertNodeInto(draggedNode, newParentNode, newParentNode.getChildCount()); // הוספתו לקטגוריה החדשה
 
-			// הרחבת ה-Node החדש להצגת הענף שהתווסף
+			// Expand the new node to show the branch that was added
 			tree.expandPath(destinationPath);
 			tree.setSelectionPath(new TreePath(draggedNode.getPath()));
 
