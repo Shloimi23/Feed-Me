@@ -630,8 +630,8 @@ public class FeedMeApp extends JFrame {
 
 			// Transferring the trailing branch to the new category
 			DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-			model.removeNodeFromParent(draggedNode); // הסרתו מהמיקום הישן
-			model.insertNodeInto(draggedNode, newParentNode, newParentNode.getChildCount()); // הוספתו לקטגוריה החדשה
+			model.removeNodeFromParent(draggedNode);
+			model.insertNodeInto(draggedNode, newParentNode, newParentNode.getChildCount()); 
 
 			// Expand the new node to show the branch that was added
 			tree.expandPath(destinationPath);
