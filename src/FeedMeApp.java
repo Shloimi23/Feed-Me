@@ -5,6 +5,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.security.MessageDigest;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -26,11 +28,11 @@ public class FeedMeApp extends JFrame {
 	String password;
 	private static UserObject userObject;
 	private static Client client = new Client();
-	
+	static Set<String> rssUrlList = new HashSet<String>();
 	// Setting up the search field and search button
 	private JTextField searchField;
 	private JButton searchButton;
-
+	private HashSet<DataChannelPanel> datapanelSet;
 	public FeedMeApp(String s) {
 		super(s);
 
@@ -41,7 +43,7 @@ public class FeedMeApp extends JFrame {
 		password = "1";
 		userObject = new UserObject(user, password, action);
 		datapanelVec = new Vector<DataChannelPanel>();
-
+		datapanelVec = new Vector<DataChannelPanel>();
 		txtAddURL = new JTextField("Enter here a new feed and then press enter.");
 		txtAddURL.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -101,7 +103,7 @@ public class FeedMeApp extends JFrame {
 			}
 		});
 
-		
+
 		// Adding a listener to the main window
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 			@Override
@@ -444,10 +446,16 @@ public class FeedMeApp extends JFrame {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
 				if (node != null && node.isLeaf()) {
 					nodeInfo = node.getUserObject();
-					System.out.println(nodeInfo.toString());
-					datapanelVec.addElement(new DataChannelPanel(nodeInfo.toString()));
-					middle.add(datapanelVec.lastElement(), BorderLayout.NORTH);
-					validate();
+					if (rssUrlList.contains(nodeInfo.toString())) {
+						return;
+					}
+					else {
+						System.out.println(nodeInfo.toString());
+						datapanelVec.addElement(new DataChannelPanel(nodeInfo.toString()));
+						middle.add(datapanelVec.lastElement(), BorderLayout.NORTH);
+						validate();
+						rssUrlList.add(nodeInfo.toString());
+					}
 				}
 			}
 		});

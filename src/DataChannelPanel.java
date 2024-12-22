@@ -12,15 +12,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JToolTip;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.TitledBorder;
 
 class DataChannelPanel extends JPanel implements MouseListener {
@@ -46,15 +43,17 @@ class DataChannelPanel extends JPanel implements MouseListener {
 
 		setOpaque(true);
 
-
-			parser = new RSSFeedParser(rssURL);
-			feed = parser.readFeed();
+	try {
+		parser = new RSSFeedParser(rssURL);
+		feed = parser.readFeed();
 
 
 		// create panel border with feed description
 		border = new TitledBorder(feed.getDescription());
 		this.setBorder(border);
-
+	}catch(NullPointerException e){
+		JOptionPane.showMessageDialog(null, "Illegal feed address");
+	}
 		addAllArticlesToPanel();
 
 	}
@@ -81,6 +80,17 @@ class DataChannelPanel extends JPanel implements MouseListener {
 
 	}
 
+	public static boolean findIfPresent(String source, HashSet<String> set)
+	{
+		if (set.contains(source)) {
+			for (String obj : set) {
+				if (obj.equals(source))
+					return false;
+			}
+		}
+
+		return true;
+	}
 	public void updateLabelByArticle(JLabel label, Article article) {
 
 		// set title on labels
